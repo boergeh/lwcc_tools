@@ -11,9 +11,6 @@ function [x, y] = get_all_spectra(folder)
   for i=1:length(f)
     for j=1:length(f{i})
       [x{i}(j,:), y{i}(j,:)] = read_lwcc_file([folder,'/',f{i}(j).name]);
-      if i==1
-%	y{i}(j,:) =  y{i}(j,:)*1.018;
-      end
     end
   end
 end
