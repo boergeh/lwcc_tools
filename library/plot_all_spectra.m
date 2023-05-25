@@ -6,7 +6,8 @@ function plot_all_spectra(folder)
     hold on;
   end
   set(gca,'xlim',[170 880]);
-  set(gca,'ylim',[100 5000]);
+  %set(gca,'ylim',[100 5000]);
+  set(gca,'ylim',[10 5000]);
   set(gca,'ytick',[100 140 200 300 500 1000 1400 2000 3000 4096]);
   xlabel('Wavelength [nm]');
   ylabel('12 bit counts');

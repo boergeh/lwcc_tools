@@ -12,10 +12,29 @@ function plot_and_save_absorption_coefficient(input_folder,output_folder, save_n
   plot(wl, a2,'color',[1 1 1]*0.7);
   hold on;
   a3 = average_and_smooth(a2,40);
+
+  %%% YCC added interpolation for data from 200nm to 800 nm
+  wl_new = 200:1:800;%%YCC
+  a3_new = interp1(wl,a3,wl_new);%%YCC
+  %%% Null correction at 700 nm
+  a3_700 = a3_new-a3_new(501);%%YCC
+%      a3_700a = a3_new-a3_new(501)*(700./wl_new);%%YCC
+%      a3_700b = a3_new-a3_new(501)*(wl_new./700);%%YCC
+
+  abscoef_new = [wl_new; real(a3_700)]';%%YCC
   plot(wl,a3,'linewidth',1);
+
+  plot(wl_new,a3_700,'linewidth',1,'Color','c');%%YCC
+%     plot(wl_new,a3_700a,'linewidth',1,'Color','r');%%YCC
+%     plot(wl_new,a3_700b,'linewidth',1,'Color','g');%%YCC
+
+
+
   grid on;
   set(gca,'xlim',[170 880]);
-  set(gca,'ylim',[-0.05 0.05]);
+%   set(gca,'ylim',[-0.05 0.05]);
+  set(gca,'ylim',[-0.05 0.4]);%%YCC
+
   hold off;
   xlabel('Wavelength [nm]');
   ylabel('Absorption coefficient [m^{-1}]');
@@ -32,4 +51,15 @@ function plot_and_save_absorption_coefficient(input_folder,output_folder, save_n
   save('-mat',[output_folder,'/',save_name,'.mat'],'lwcc');
   abscoef = [wl; real(a3)']';
   save('-ascii',[output_folder,'/',save_name,'.txt'],'abscoef');
+
+%   %%% YCC added interpolation for data from 200nm to 800 nm
+%   wl_new = 200:1:800;
+%   a3_new = interp1(wl,a3,wl_new);
+%   a3_720 = a3_new-a3_new(521)*(720./wl_new);
+%   abscoef_new = [wl_new; real(a3_720)]';
+  save('-ascii',[output_folder,'/',save_name,'_interplated.txt'],'abscoef_new');
 end
+
+
+
+
